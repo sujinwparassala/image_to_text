@@ -1,0 +1,60 @@
+import cv2
+import easyocr
+
+def extract_text_from_image(image_path):
+    try:
+        # Read the image using OpenCV
+        img = cv2.imread(image_path)
+
+        # Convert the image to RGB (easyocr requires RGB images)
+        img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
+        # Create an OCR reader using the English language
+        reader = easyocr.Reader(['en'])
+
+        # Use easyocr to extract text
+        result = reader.readtext(img_rgb)
+
+        # Extract text from the result
+        text = ' '.join(entry[1] for entry in result)
+
+        return text
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
+
+# Replace 'your_image.jpg' with the path to your JPEG file
+image_path = 'C:\\Users\\ERSS\\Desktop\\sujin_book\\New folder\\images\\sim5.jpeg'
+extracted_text = extract_text_from_image(image_path)
+
+if extracted_text:
+    print("Extracted Text:")
+    print(extracted_text)
+else:
+    print("Failed to extract text from the image.")
+
+
+# ... (previous code)
+
+def save_to_text_file(text, text_output_path='C:\\Users\\ERSS\\Desktop\\sujin_book\\New folder\\images\\sim5output_text.txt'):
+    try:
+        with open(text_output_path, 'w', encoding='utf-8') as file:
+            file.write(text)
+        print(f"Text extracted and saved to {text_output_path}")
+    except Exception as e:
+        print(f"Error saving to text file: {e}")
+
+
+# ... (remaining code)
+
+# Replace 'your_image.jpg' with the path to your JPEG file
+extracted_text = extract_text_from_image(image_path)
+
+if extracted_text:
+    print("Extracted Text:")
+    print(extracted_text)
+
+    # Save the extracted text to a text file
+    save_to_text_file(extracted_text)
+else:
+    print("Failed to extract text from the image.")
